@@ -1,1 +1,68 @@
+PROBLEM LINK: https://leetcode.com/problems/set-matrix-zeroes/submissions/
 
+/*
+tc:  O((m*n)(m+n))
+sc:O(m*m)
+brute force: create another 2d vector named copy and copy all the elements of matrix into it..we are doing this so that we dont loose initial given value.
+since we have to make modifications in the matrix hence traverse the copy vector and we if u find any value as 0 then set its whole row and column as zero
+*/
+
+void setZeroes(vector<vector<int>>& matrix) {
+        vector<vector<int>>copy(matrix.size(),vector<int>(matrix[0].size(),0));
+        for(int i=0;i<matrix.size();i++){
+            for(int j=0;j<matrix[i].size();j++){
+                copy[i][j]=matrix[i][j];
+            }
+        }
+        for(int i=0;i<copy.size();i++){
+            for(int j=0;j<copy[i].size();j++){
+                if(copy[i][j]==0){
+                    for(int k=0;k<copy[i].size();k++){
+                        matrix[i][k]=0;
+                    }
+                    for(int k=0;k<copy.size();k++){
+                        matrix[k][j]=0;
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    /*method 2 (using map)
+tc: O(m*n)
+sc: O(+n)
+traverse the matrix and wherever matrix[i][j]==0 store that row and col in a mutimap
+now traverse the map and for every element set entire row and col to zero
+
+why we used multimap ...why cant unordered map.....this is so coz
+Multimap is similar to a map with the addition that multiple elements can have the same keys. Also, it is NOT required that the key-value and mapped value pair have to be unique in this case.
+
+for eg unordered map can't store mp[0]=0(it means row zero and colum zero has zero), mp[0]=1 (it means row 0 and column 1 has zero ) because it only stores unique key value pairs.......but multimap can easily do that
+*/
+
+#include<bits/stdc++.h>
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        multimap<int,int>mp;
+        for(int i=0;i<matrix.size();i++){
+            for(int j=0;j<matrix[i].size();j++){
+                if(matrix[i][j]==0){
+                   mp.insert({i,j});
+                }
+            }
+        }
+        for(auto x:mp){
+            int row=x.first;
+            int col=x.second;
+            for(int k=0;k<matrix.size();k++){
+               matrix[k][col]=0; 
+            }
+            for(int k=0;k<matrix[0].size();k++){
+               matrix[row][k]=0; 
+            }
+        }
+        
+    }
+};
