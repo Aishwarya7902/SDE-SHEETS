@@ -30,6 +30,11 @@ eleement from the ds and unmark it from frequeny array
 
 8.at last return ans
 
+
+❤❤❤❤❤feel of this approach :har ek element ke liye ye kam karenge...pahle check karo ki frequency array me unmarked hai ki ni ...if yes....ds me push kar do ...
+and ds ke jhole and freq ke jhole ke sath recursion ko call kar do next elements lane ke liye...jab sare recursive calls aa jaye wapas to tum khud ko freq array me
+se unmark kar do and ds ke jhole me se khud ko nikal lo....isse sabko lagega ki tumne to kuch kiya hi ni🤣😉
+
 */
 
 class Solution {
