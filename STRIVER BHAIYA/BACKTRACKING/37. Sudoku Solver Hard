@@ -1,0 +1,130 @@
+PROBLEM:https://leetcode.com/problems/sudoku-solver/
+BLOG:https://takeuforward.org/data-structure/sudoku-solver/
+VIDEO: 1. https://www.youtube.com/watch?v=tRj4VlVTat8    (MICROSOFT WALI DIDI)
+       2. https://www.youtube.com/watch?v=FWAIf_EVUKE    (STRIVER BHAIYA)
+       
+       
+/*APPROACH 1: (MICROSOFT WALI DIDI)
+*/
+
+class Solution {
+public:
+    bool issafe(vector<vector<char>>& board,int row,int col,int numb){
+        //check for row and column
+        //move from 0 to board size and for that particular row and search if there isn't any num in that row na
+         //move from 0 to board size and for that particular column and search if there isn't any num in that column na
+        for(int i=0;i<board.size();i++){
+            if(board[i][col]==(char)(numb+'0')){
+                return false;
+            }
+            if(board[row][i]==(char)(numb+'0')){
+                return false;
+            }
+        }
+        //check for grid
+        
+        /*explaination  startCol=(col/3)*3; ....(col/3) coz we divide the whole cols in 3 parts....startCol=(col/3)*col coz lets says we get cols 0 or 1 or 2...then
+       ----> for col=0
+        startCol will be 0 lets varify
+        (0/3)*3=0...hence varified
+      ---->  for col=1
+        startCol will be 0 lets varify
+        (1/3)*3=0...hence varified
+       ----> for col=2
+        startCol will be 0 lets varify
+        (2/3)*3=0...hence varified
+        
+        
+        Similarly for cols 3,4,5 startCol will be 3:
+        ----> for col=3
+        startCol will be 3 ....lets varify
+        (3/3)*3=3...hence varified
+        ----> for col=4
+        startCol will be 3.. lets varify
+        (4/3)*3=3...hence varified
+        ----> for col=5
+        startCol will be 3... lets varify
+        (5/3)*3=3...hence varified
+        
+        Similarly for cols 6,7,8 startCol will be 6:
+        ----> for col=6
+        startCol will be 6 ....lets varify
+        (6/3)*3=6...hence varified
+        
+        ----> for col=7
+        startCol will be 6.. lets varify
+        (7/3)*3=6...hence varified
+        ----> for col=8
+        startCol will be 6.... lets varify
+        (8/3)*3=6...hence varified
+        
+        😇IN THE SAME WAY WE CAN VARIFY FOR ROWS TOO
+        */
+
+        int startRow=(row/3)*3;
+        int startCol=(col/3)*3;
+        //we ran loop from start to start+3 coz har sub-greed  ek 3x3 ki small  greed hai
+        for(int i=startRow;i<startRow+3;i++){
+            for(int j=startCol;j<startCol+3;j++){
+                if(board[i][j]==(char)(numb+'0'))
+                    return false;
+            }
+        }
+        return true;
+    }
+    bool helper(vector<vector<char>>& board,int row,int col){
+        //base case
+        //since we are starting from 0th row then we filled all the columns of 0th row ...and when col became equal to board.size() then we moved to next row...similarly we fill 1st row...2nd row and so on and so forth ...when we were in the board.size()-1 th row we filled all the columns of that row..then ...when col became eqaul to board.size() we moved to next row ...which will be row=board.size()...here we observed that we filled all the board ..and the moment when row becomes equal to board.size() we can simply return true.
+        
+        if(row==board.size()){
+            return true;
+        }
+        //calculate new row and new col which we will pass in the next recursive call..initialize with zero
+        int nwrow=0;
+        int nwcol=0;
+        
+        //if col!=board.size()-1 it means we haven't reached the last col hence we will call recursion for the col+1 only and row will remain the same 
+        if(col!=board.size()-1){
+            nwrow=row;
+            nwcol=col+1;
+        }
+        //if col==board.size()-1....it means we have reached the last column ...now we will have to head towards the next row ...hence nwrow=row+1 and ncol=0..coz we will have to start from the 0th col
+           
+        else{
+            nwrow=row+1;
+            nwcol=0;
+        }
+        //if board[row][col]!='.'....it means there is already some no there...hence we call recursion ...if it returns true ...we also return true..
+        if(board[row][col]!='.'){
+            if(helper(board,nwrow,nwcol))
+                return true;
+        }
+      //  if board[row][col]=='.'   ....then we try every possibility from (1 to 9) at that place..if it is safe to place that no there we place it...call recursion on newrow and newcol...if recursion returns true it means aage chal ke koi prblm ni aai...hence we also return true...if recursion returns false it means aage chal ke koi prblm aai hai...then recursion bolega bhai dekh tu jo kar raha na wo galt hai...tu kuch aur try kar...hence we backtrack and try next possibilty on that position 
+        
+        else{
+            for(int i=1;i<=9;i++){
+                if(issafe(board,row,col,i)){
+                    board[row][col]=(char)(i+'0');
+                    if(helper(board,nwrow,nwcol)){
+                        return true;
+                    }
+                    else{
+                        //backtrack
+                        board[row][col]='.';
+                    }
+                }
+            }
+        }
+        //we tried every possibility ...none of them worked...we return false....and also in case where board[row][col]!='.' and if next recursive calls return false then in that case too we return false.
+        return false;
+        
+    }
+    void solveSudoku(vector<vector<char>>& board) {
+        //do  a plain traversal on the board
+       helper(board,0,0);  
+    }
+};
+
+
+
+
