@@ -126,5 +126,22 @@ public:
 };
 
 
+/*APPROACH  2: (THE LEGEND CODER STRIVER BHAIYA)
+ 1.we simply do a plain traversal over the matrix
+2.traverse the 2d matrix by running 2 for loops to find an empty space
+3.the moment u find an empty space...try out every possibility from (1-9)  at that cell
+4.if it is valid to place that no at that cell just place that no at that cell
+5.call recursion with the updated matrix
+6.if recursion returns a true ...we also return true
+7.if recursion return false ...we backtrack and do board[i][j]='.'   and try out next possibilty.
+.....(feel ❤: if recursion returned false ..it means wo bolega maine sabkuch try kiya but kuch bhi work ni kiya...to recursion bolega ki bhai dekh tu kuch galat kar raha hai....tu kuch aur possibility try kar....hence ...we backtrack and do board[i][j]='.'  and try out next possibilty.😉)
+8.if we try out every possibility from 1-9  but we never returned true.....we return a false form here and give the function  ( which has called us ) a signal that bhai dekh tu kuch galat kar raha hai....tu kuch aur possibility try kar....hence ...that function will backtrack and do board[i][j]='.'  and try out next possibilty.
+
+9.let's say i never encountered an empty cell....hence we will never enter this loop
+if(board[i][j]=='.')
+in that condition we return a true from there.
+*/
+
+
 
 
